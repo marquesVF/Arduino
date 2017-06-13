@@ -1,4 +1,14 @@
-#include "CoAP.h"
+/*
+This file is part of the ESP-COAP Server library for Arduino
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 3 of the License, or (at your option) any later version.
+
+*/
+
+#include "coap_server.h"
 
 //creating instance for required class
 WiFiUDP Udp;
@@ -30,7 +40,7 @@ coapUri::coapUri() {
 }
 
 //adding resources 
-void coapUri::add(servercallback call, String url,resource_dis resource[]) {
+void coapUri::add(callback call, String url,resource_dis resource[]) {
 
 	for (int i = 0; i < MAX_CALLBACK; i++)
 		if (c[i] != NULL && u[i].equals(url)) {
@@ -56,12 +66,12 @@ void coapUri::add(servercallback call, String url,resource_dis resource[]) {
 }
 
 //finding request url(resource)
-servercallback coapUri::find(String url) {
+callback coapUri::find(String url) {
 	for (int i = 0; i < MAX_CALLBACK; i++) if (c[i] != NULL && u[i].equals(url)) return c[i];
 	return NULL;
 }
 
-void coapServer::server(servercallback c, String url) {
+void coapServer::server(callback c, String url) {
 	uri.add(c, url,resource); 
 }
 

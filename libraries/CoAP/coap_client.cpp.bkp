@@ -1,7 +1,18 @@
-#include "CoAP.h"
+/*
+This file is part of the ESP-COAP Client library for Arduino
 
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 3 of the License, or (at your option) any later version.
 
+*/
+
+#include "coap_client.h"
+
+//creating instance for required class
 WiFiUDP udp;
+
 //coap client begin
 bool coapClient::start() {
 	this->start(COAP_DEFAULT_PORT);
@@ -283,3 +294,8 @@ int coapClient::parseOption(coapOption *option, uint16_t *running_delta, uint8_t
 
 	return 0;
 }
+
+
+
+
+
