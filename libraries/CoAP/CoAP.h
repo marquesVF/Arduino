@@ -207,7 +207,7 @@ class coapServer {
 		bool start();
 		bool start(int port);
 
-		void server(servercallback c, String url);
+		void serve(servercallback c, String url);
 		bool loop();
 
 		uint16_t sendPacket(coapPacket *packet, IPAddress ip, int port);

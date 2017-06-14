@@ -61,7 +61,7 @@ servercallback coapUri::find(String url) {
 	return NULL;
 }
 
-void coapServer::server(servercallback c, String url) {
+void coapServer::serve(servercallback c, String url) {
 	uri.add(c, url,resource); 
 }
 

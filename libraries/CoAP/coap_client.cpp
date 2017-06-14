@@ -26,7 +26,7 @@ uint16_t coapClient::put(IPAddress ip, int port, char *url, char *payload, int p
 //post request
 uint16_t coapClient::post(IPAddress ip, int port, char *url, char *payload, int payloadlen) {
 	// Error when using COAP_CON option. So I'm using COAP_NONCON instead :)
-	send(ip, port, url, COAP_NONCON, COAP_POST, NULL, 0, (uint8_t *)payload, payloadlen,0,NULL);
+	send(ip, port, url, COAP_CON, COAP_POST, NULL, 0, (uint8_t *)payload, payloadlen,0,NULL);
 }
 
 //delete request
