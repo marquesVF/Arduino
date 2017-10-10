@@ -31,9 +31,14 @@ enum HTTPMethod { HTTP_ANY, HTTP_GET, HTTP_POST, HTTP_PUT, HTTP_PATCH, HTTP_DELE
 enum HTTPUploadStatus { UPLOAD_FILE_START, UPLOAD_FILE_WRITE, UPLOAD_FILE_END,
                         UPLOAD_FILE_ABORTED };
 enum HTTPClientStatus { HC_NONE, HC_WAIT_READ, HC_WAIT_CLOSE };
+enum HTTPAuthMethod { BASIC_AUTH, DIGEST_AUTH };
 
 #define HTTP_DOWNLOAD_UNIT_SIZE 1460
+
+#ifndef HTTP_UPLOAD_BUFLEN
 #define HTTP_UPLOAD_BUFLEN 2048
+#endif
+
 #define HTTP_MAX_DATA_WAIT 1000 //ms to wait for the client to send the request
 #define HTTP_MAX_POST_WAIT 1000 //ms to wait for POST data to arrive
 #define HTTP_MAX_SEND_WAIT 5000 //ms to wait for data chunk to be ACKed
@@ -74,7 +79,7 @@ public:
   void stop();
 
   bool authenticate(const char * username, const char * password);
-  void requestAuthentication();
+  void requestAuthentication(HTTPAuthMethod mode = BASIC_AUTH, const char* realm = NULL, const String& authFailMsg = String("") );
 
   typedef std::function<void(void)> THandlerFunction;
   void on(const String &uri, THandlerFunction handler);
@@ -145,6 +150,10 @@ protected:
   uint8_t _uploadReadByte(WiFiClient& client);
   void _prepareHeader(String& response, int code, const char* content_type, size_t contentLength);
   bool _collectHeader(const char* headerName, const char* headerValue);
+  
+  String _getRandomHexString();
+  // for extracting Auth parameters
+  String _exractParam(String& authReq,const String& param,const char delimit = '"');
 
   struct RequestArgument {
     String key;
@@ -177,6 +186,10 @@ protected:
 
   String           _hostHeader;
   bool             _chunked;
+
+  String           _snonce;  // Store noance and opaque for future comparison
+  String           _sopaque;
+  String           _srealm;  // Store the Auth realm between Calls
 
 };
 
